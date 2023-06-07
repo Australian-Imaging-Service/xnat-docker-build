@@ -1,6 +1,6 @@
 FROM tomcat:9.0.62-jdk8-openjdk-bullseye
 
-ARG XNAT_VERSION=1.8.8
+ARG XNAT_VERSION=1.8.8.1
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 ARG XNAT_DATASOURCE_DRIVER=org.postgresql.Driver
