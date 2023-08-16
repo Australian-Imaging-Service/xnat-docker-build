@@ -1,6 +1,6 @@
 FROM tomcat:9.0.62-jdk8-openjdk-bullseye
 
-ARG XNAT_VERSION=1.8.8.2
+ARG XNAT_VERSION=1.8.9
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 ARG XNAT_DATASOURCE_DRIVER=org.postgresql.Driver
@@ -14,10 +14,10 @@ ARG XNAT_MIN_HEAP=2000m
 ARG XNAT_MAX_HEAP=2000m
 
 # default plugins for AIS
-ARG container_service_ver=3.3.2-fat
+ARG container_service_ver=3.4.0
 ARG ldap_auth_ver=1.1.0
 ARG ohif_viewer_ver=3.5.3-XNAT-1.8.7
-ARG openid_auth_ver=1.2.1-SNAPSHOT
+ARG openid_auth_ver=1.3.0
 ARG xsync_ver=1.6.0
 ARG batch_launch_ver=0.6.0
 
@@ -55,6 +55,7 @@ RUN sed -i 's/ch.qos.logback.core.rolling.RollingFileAppender/ch.qos.logback.cor
 RUN wget --no-verbose -O container-service-${container_service_ver}.jar https://api.bitbucket.org/2.0/repositories/xnatdev/container-service/downloads/container-service-${container_service_ver}.jar
 RUN wget --no-verbose -O ldap-auth-plugin-${ldap_auth_ver}.jar https://api.bitbucket.org/2.0/repositories/xnatx/ldap-auth-plugin/downloads/ldap-auth-plugin-${ldap_auth_ver}.jar
 RUN wget --no-verbose -O ohif-viewer-${ohif_viewer_ver}.jar https://api.bitbucket.org/2.0/repositories/icrimaginginformatics/ohif-viewer-xnat-plugin/downloads/ohif-viewer-${ohif_viewer_ver}.jar
+# RUN wget --no-verbose -O openid-auth-plugin-${openid_auth_ver}.jar https://github.com/Australian-Imaging-Service/openid-auth-plugin/releases/download/${openid_auth_ver}/openid-auth-plugin-${openid_auth_ver}.jar
 RUN wget --no-verbose -O openid-auth-plugin-${openid_auth_ver}.jar https://github.com/Australian-Imaging-Service/openid-auth-plugin/releases/download/${openid_auth_ver}/openid-auth-plugin-${openid_auth_ver}.jar
 RUN wget --no-verbose -O xsync-plugin-all-${xsync_ver}.jar https://api.bitbucket.org/2.0/repositories/xnatdev/xsync/downloads/xsync-plugin-all-${xsync_ver}.jar
 RUN wget --no-verbose -O batch-launch-${batch_launch_ver}.jar https://api.bitbucket.org/2.0/repositories/xnatx/xnatx-batch-launch-plugin/downloads/batch-launch-${batch_launch_ver}.jar
