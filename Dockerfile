@@ -14,7 +14,7 @@ ARG XNAT_MIN_HEAP=2000m
 ARG XNAT_MAX_HEAP=2000m
 
 # default plugins for AIS
-ARG container_service_ver=3.4.0
+ARG container_service_ver=3.4.0-fat
 ARG ldap_auth_ver=1.1.0
 ARG ohif_viewer_ver=3.5.3-XNAT-1.8.7
 ARG openid_auth_ver=1.3.0
