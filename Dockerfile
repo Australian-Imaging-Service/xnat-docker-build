@@ -99,7 +99,8 @@ EOT
 COPY --chmod=0755 ./entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY ./xnat-conf.properties ${XNAT_HOME}/config/xnat-conf.properties
 
-ENV TZ=UTC \
+ENV XNAT_HOME=${XNAT_HOME} \
+    TZ=UTC \
     CATALINA_OPTS="-XX:InitialRAMPercentage=40.0 -XX:MaxRAMPercentage=50.0 -XX:+UseConcMarkSweepGC -XX:-OmitStackTraceInFastThrow -Dxnat.home=${XNAT_HOME}"
 
 LABEL org.opencontainers.image.source https://github.com/australian-imaging-service/xnat-docker-build
