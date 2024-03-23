@@ -1,9 +1,6 @@
-FROM tomcat:9-jdk8 as build
-
 ARG XNAT_VERSION=1.8.9.2
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
-
 # default plugins for AIS
 ARG container_service_ver=3.4.2-fat
 ARG ldap_auth_ver=1.1.0
@@ -12,12 +9,21 @@ ARG openid_auth_ver=1.3.1-xpl
 ARG xsync_ver=1.6.0
 ARG batch_launch_ver=0.6.0
 
+FROM tomcat:9-jdk8 as build
+ARG XNAT_VERSION
+ARG XNAT_ROOT
+ARG XNAT_HOME
+# default plugins for AIS
+ARG container_service_ver
+ARG ldap_auth_ver
+ARG ohif_viewer_ver
+ARG openid_auth_ver
+ARG xsync_ver
+ARG batch_launch_ver
+
 RUN <<EOT
   apt-get update
   apt-get install -y \
-    less \
-    postgresql-client \
-    telnet \
     unzip \
     wget
   rm -rf /var/lib/apt/lists/*
@@ -66,13 +72,17 @@ RUN <<EOT
     https://api.bitbucket.org/2.0/repositories/xnatx/xnatx-batch-launch-plugin/downloads/batch-launch-${batch_launch_ver}.jar
 EOT
 
-
 FROM tomcat:9-jdk8
-ARG XNAT_ROOT=/data/xnat
-ARG XNAT_HOME=/data/xnat/home
-ARG XNAT_VERSION=1.8.9.2
+ARG XNAT_VERSION
+ARG XNAT_ROOT
+ARG XNAT_HOME
 
 RUN <<EOT
+  apt update
+  apt install -y \
+    less \
+    telnet \
+    vim
   rm -rf /var/lib/apt/lists/*
   rm -rf ${CATALINA_HOME}/webapps/*
 EOT
@@ -86,16 +96,14 @@ RUN <<EOT
     ${CATALINA_HOME}/webapps/ROOT/WEB-INF/classes/logback.xml
 EOT
 
-COPY --chmod=0755 ./setenv.sh ${CATALINA_HOME}/bin/setenv.sh
 COPY --chmod=0755 ./entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY ./xnat-conf.properties ${XNAT_HOME}/config/xnat-conf.properties
 
-ENV XNAT_HOME=${XNAT_HOME} \
-    XNAT_VERSION=$XNAT_VERSION \
-    TZ=UTC
+ENV TZ=UTC \
+    CATALINA_OPTS="-XX:InitialRAMPercentage=40.0 -XX:MaxRAMPercentage=50.0 -XX:+UseConcMarkSweepGC -XX:-OmitStackTraceInFastThrow -Dxnat.home=${XNAT_HOME}"
 
-LABEL org.opencontainers.image.source https://github.com/australian-imaging-service/xnat-build
-LABEL maintainer="AIS Team ais-team@ais"
+LABEL org.opencontainers.image.source https://github.com/australian-imaging-service/xnat-docker-build
+LABEL maintainer="AIS Team"
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["catalina.sh","run"]
