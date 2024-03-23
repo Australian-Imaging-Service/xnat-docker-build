@@ -1,3 +1,5 @@
+IMAGE_TAG := 1.8.10-rc.1
+
 CONFIG = .env
 ifneq (,$(wildcard ${CONFIG}))
 include ${CONFIG}
@@ -11,9 +13,8 @@ all : build
 .ONESHELL:
 SHELL = /bin/bash
 build :
-	DOCKER_IMAGE_TAG="1.8.9.2"
 	docker buildx build \
 		--progress=plain \
-		--tag localhost:32000/xnat:1.8.9.2 . 2>&1 \
+		--tag localhost:32000/xnat:${IMAGE_TAG} . 2>&1 \
 		|tee log-buildx-$(DATE)
-	docker push localhost:32000/xnat:1.8.9.2
+	docker push localhost:32000/xnat:${IMAGE_TAG}

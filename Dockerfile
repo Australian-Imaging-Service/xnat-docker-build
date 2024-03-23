@@ -1,12 +1,12 @@
-ARG XNAT_VERSION=1.8.9.2
+ARG XNAT_VERSION=1.8.10
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 # default plugins for AIS
-ARG container_service_ver=3.4.2-fat
+ARG container_service_ver=3.4.3-fat
 ARG ldap_auth_ver=1.1.0
-ARG ohif_viewer_ver=3.6.0
+ARG ohif_viewer_ver=3.6.1
 ARG openid_auth_ver=1.3.1-xpl
-ARG xsync_ver=1.6.0
+ARG xsync_ver=1.7.0
 ARG batch_launch_ver=0.6.0
 
 FROM tomcat:9-jdk8 as build
@@ -100,6 +100,7 @@ COPY --chmod=0755 ./entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY ./xnat-conf.properties ${XNAT_HOME}/config/xnat-conf.properties
 
 ENV XNAT_HOME=${XNAT_HOME} \
+    XNAT_VERSION=${XNAT_VERSION} \
     TZ=UTC \
     CATALINA_OPTS="-XX:InitialRAMPercentage=40.0 -XX:MaxRAMPercentage=50.0 -XX:+UseConcMarkSweepGC -XX:-OmitStackTraceInFastThrow -Dxnat.home=${XNAT_HOME}"
 
