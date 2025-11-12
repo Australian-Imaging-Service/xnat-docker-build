@@ -1,3 +1,9 @@
 #!/bin/bash
 set -x
-exec $@
+for f in /docker-entrypoint.d/*; do
+	if [ -f "$f" ]; then
+		source "$f"
+	fi
+done
+
+exec "$@"
