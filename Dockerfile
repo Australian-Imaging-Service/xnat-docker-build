@@ -101,6 +101,7 @@ RUN <<EOT
 EOT
 
 COPY --chmod=0755 ./entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN mkdir -p /docker-entrypoint.d
 COPY ./xnat-conf.properties ${XNAT_HOME}/config/xnat-conf.properties
 
 ENV XNAT_HOME=${XNAT_HOME} \
