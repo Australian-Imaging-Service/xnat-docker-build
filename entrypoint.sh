@@ -1,6 +1,6 @@
 #!/bin/bash
-set -x
-for f in /docker-entrypoint.d/*; do
+
+for f in /docker-entrypoint.d/*.sh; do
 	if [ -f "$f" ]; then
 		source "$f"
 	fi
