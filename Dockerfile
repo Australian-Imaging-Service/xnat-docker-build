@@ -1,16 +1,16 @@
-ARG XNAT_VERSION=1.9.3.1
+ARG XNAT_VERSION=1.10.1
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 # default plugins for AIS
-ARG container_service_ver=3.7.3-fat
+ARG container_service_ver=3.8.1-fat
 ARG ldap_auth_ver=1.3.0
-ARG ohif_viewer_ver=3.7.2
+ARG ohif_viewer_ver=3.8.0
 ARG openid_auth_ver=1.4.1-xpl
 ARG xsync_ver=1.8.1
 ARG batch_launch_ver=0.9.0-xpl
-ARG jupyterhub_ver=1.3.3
+ARG jupyterhub_ver=1.3.4
 
-FROM tomcat:9-jdk8 AS build
+FROM tomcat:9.0-jdk21-temurin-noble AS build
 ARG XNAT_VERSION
 ARG XNAT_ROOT
 ARG XNAT_HOME
@@ -77,7 +77,7 @@ RUN <<EOT
     https://github.com/NrgXnat/xnat-jupyterhub-plugin/releases/download/v1.3.3/xnat-jupyterhub-plugin-${jupyterhub_ver}.jar
 EOT
 
-FROM tomcat:9-jdk8
+FROM tomcat:9.0-jdk21-temurin-noble
 ARG XNAT_VERSION
 ARG XNAT_ROOT
 ARG XNAT_HOME
@@ -102,7 +102,7 @@ RUN <<EOT
 EOT
 
 COPY --chmod=0755 ./entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY ./docker-entrypoint.d/ /docker-entrypoint.d/
+RUN mkdir -p /docker-entrypoint.d
 COPY ./xnat-conf.properties ${XNAT_HOME}/config/xnat-conf.properties
 
 ENV XNAT_HOME=${XNAT_HOME} \
