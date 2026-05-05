@@ -54,7 +54,7 @@ RUN <<EOT
   rm -rf ${CATALINA_HOME}/webapps/*
   mkdir -p ${CATALINA_HOME}/webapps/ROOT
   curl -sSL -o /tmp/xnat-web-${XNAT_VERSION}.war \
-    https://api.bitbucket.org/2.0/repositories/xnatdev/xnat-web/downloads/xnat-web-${XNAT_VERSION}.war
+    https://bitbucket.org/xnatdev/xnat-web/downloads/xnat-web-${XNAT_VERSION}.war
   unzip -o -d ${CATALINA_HOME}/webapps/ROOT /tmp/xnat-web-${XNAT_VERSION}.war
 EOT
 
