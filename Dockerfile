@@ -108,7 +108,7 @@ COPY ./xnat-conf.properties ${XNAT_HOME}/config/xnat-conf.properties
 ENV XNAT_HOME=${XNAT_HOME} \
     XNAT_VERSION=${XNAT_VERSION} \
     TZ=UTC \
-    CATALINA_OPTS="-XX:InitialRAMPercentage=40.0 -XX:MaxRAMPercentage=50.0 -XX:+UseConcMarkSweepGC -XX:-OmitStackTraceInFastThrow -Dxnat.home=${XNAT_HOME}"
+    CATALINA_OPTS="-XX:InitialRAMPercentage=40.0 -XX:MaxRAMPercentage=50.0 -XX:+UseG1GC -XX:-OmitStackTraceInFastThrow -Dxnat.home=${XNAT_HOME}"
 
 LABEL org.opencontainers.image.source https://github.com/australian-imaging-service/xnat-docker-build
 LABEL maintainer="AIS Team"
