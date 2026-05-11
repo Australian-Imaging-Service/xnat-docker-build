@@ -74,7 +74,7 @@ RUN <<EOT
   curl -sSL -O \
     https://api.bitbucket.org/2.0/repositories/xnatx/xnatx-batch-launch-plugin/downloads/batch-launch-${batch_launch_ver}.jar
   curl -sSL -O \
-    https://github.com/NrgXnat/xnat-jupyterhub-plugin/releases/download/v1.3.3/xnat-jupyterhub-plugin-${jupyterhub_ver}.jar
+    https://github.com/NrgXnat/xnat-jupyterhub-plugin/releases/download/v${jupyterhub_ver}/xnat-jupyterhub-plugin-${jupyterhub_ver}.jar
 EOT
 
 FROM tomcat:9.0-jdk21-temurin-noble
