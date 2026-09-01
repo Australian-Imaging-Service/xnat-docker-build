@@ -1,4 +1,4 @@
-ARG XNAT_VERSION=1.10.0
+ARG XNAT_VERSION=1.10.1
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 # default plugins for AIS
@@ -54,7 +54,7 @@ RUN <<EOT
   rm -rf ${CATALINA_HOME}/webapps/*
   mkdir -p ${CATALINA_HOME}/webapps/ROOT
   curl -sSL -o /tmp/xnat-web-${XNAT_VERSION}.war \
-    https://bitbucket.org/xnatdev/xnat-web/downloads/xnat-web-${XNAT_VERSION}.war
+    https://github.com/NrgXnat/xnat/releases/download/${XNAT_VERSION}/xnat-web-${XNAT_VERSION}.war
   unzip -o -d ${CATALINA_HOME}/webapps/ROOT /tmp/xnat-web-${XNAT_VERSION}.war
 EOT
 
