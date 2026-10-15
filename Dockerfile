@@ -51,29 +51,31 @@ EOT
 
 # Install XNAT web Java application
 RUN <<EOT
+  set -eu
   rm -rf ${CATALINA_HOME}/webapps/*
   mkdir -p ${CATALINA_HOME}/webapps/ROOT
-  curl -sSL -o /tmp/xnat-web-${XNAT_VERSION}.war \
+  curl -fsSL -o /tmp/xnat-web-${XNAT_VERSION}.war \
     https://github.com/NrgXnat/xnat/releases/download/${XNAT_VERSION}/xnat-web-${XNAT_VERSION}.war
   unzip -o -d ${CATALINA_HOME}/webapps/ROOT /tmp/xnat-web-${XNAT_VERSION}.war
 EOT
 
 # Download standard plugins
 RUN <<EOT
+  set -eu
   cd ${XNAT_HOME}/plugins/
-  curl -sSL -O \
+  curl -fsSL -O \
     https://github.com/NrgXnat/container-service/releases/download/${container_service_ver}/container-service-${container_service_ver}-fat.jar
-  curl -sSL -O \
+  curl -fsSL -O \
     https://github.com/NrgXnat/ldap-auth-plugin/releases/download/${ldap_auth_ver}/ldap-auth-plugin-${ldap_auth_ver}.jar
-  curl -sSL -O \
+  curl -fsSL -O \
     https://github.com/xnatworks/ohif-viewer-xnat-plugin/releases/download/${ohif_viewer_ver}/ohif-viewer-${ohif_viewer_ver}-fat.jar
-  curl -sSL -O \
+  curl -fsSL -O \
     https://github.com/NrgXnat/openid-auth-plugin/releases/download/${openid_auth_ver}/openid-auth-plugin-${openid_auth_ver}-xpl.jar
-  curl -sSL -O \
+  curl -fsSL -O \
     https://github.com/NrgXnat/xsync/releases/download/${xsync_ver}/xsync-plugin-all-${xsync_ver}.jar
-  curl -sSL -O \
+  curl -fsSL -O \
     https://github.com/NrgXnat/batch-launch-plugin/releases/download/${batch_launch_ver}/batch-launch-${batch_launch_ver}-xpl.jar
-  curl -sSL -O \
+  curl -fsSL -O \
     https://github.com/NrgXnat/xnat-jupyterhub-plugin/releases/download/v${jupyterhub_ver}/xnat-jupyterhub-plugin-${jupyterhub_ver}.jar
 EOT
 
