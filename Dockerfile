@@ -64,7 +64,7 @@ RUN <<EOT
   curl -sSL -O \
     https://github.com/NrgXnat/container-service/releases/download/${container_service_ver}/container-service-${container_service_ver}-fat.jar
   curl -sSL -O \
-    https://github.com/NrgXnat/ldap-auth-plugin/releases/download/${ldap_auth_ver}ldap-auth-plugin-${ldap_auth_ver}.jar
+    https://github.com/NrgXnat/ldap-auth-plugin/releases/download/${ldap_auth_ver}/ldap-auth-plugin-${ldap_auth_ver}.jar
   curl -sSL -O \
     https://github.com/xnatworks/ohif-viewer-xnat-plugin/releases/download/${ohif_viewer_ver}/ohif-viewer-${ohif_viewer_ver}-fat.jar
   curl -sSL -O \
