@@ -10,7 +10,7 @@ ARG xsync_ver=1.8.1
 ARG batch_launch_ver=0.9.0
 ARG jupyterhub_ver=1.3.4
 
-FROM tomcat:9.0-jdk21-temurin-noble AS build
+FROM tomcat:9.0-jdk8-temurin-noble AS build
 ARG XNAT_VERSION
 ARG XNAT_ROOT
 ARG XNAT_HOME
@@ -82,7 +82,7 @@ RUN <<EOT
     https://github.com/NrgXnat/xnat-jupyterhub-plugin/releases/download/v${jupyterhub_ver}/xnat-jupyterhub-plugin-${jupyterhub_ver}.jar
 EOT
 
-FROM tomcat:9.0-jdk21-temurin-noble
+FROM tomcat:9.0-jdk8-temurin-noble
 ARG XNAT_VERSION
 ARG XNAT_ROOT
 ARG XNAT_HOME
