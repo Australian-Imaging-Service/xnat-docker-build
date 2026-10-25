@@ -1,11 +1,11 @@
-ARG XNAT_VERSION=1.10.2.1
+ARG XNAT_VERSION=1.9.3.9
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 # default plugins for AIS
-ARG container_service_ver=3.9.0
+ARG container_service_ver=3.8.1
 ARG ldap_auth_ver=1.3.0
-ARG ohif_viewer_ver=3.8.0
-ARG openid_auth_ver=1.6.0
+ARG ohif_viewer_ver=3.7.2
+ARG openid_auth_ver=1.4.1
 ARG xsync_ver=1.8.1
 ARG batch_launch_ver=0.9.0
 ARG jupyterhub_ver=1.3.4
@@ -24,15 +24,17 @@ ARG batch_launch_ver
 ARG jupyterhub_ver
 
 RUN <<EOT
+  set -eu
   apt-get update
-  apt-get install -y \
-    unzip \
-    wget
+  apt-get install -y --no-install-recommends \
+    curl \
+    unzip
   rm -rf /var/lib/apt/lists/*
 EOT
 
 # Setup XNAT base directory structure
 RUN <<EOT
+  set -eu
   mkdir -p \
     ${XNAT_ROOT}/archive \
     ${XNAT_ROOT}/build \
@@ -55,8 +57,9 @@ RUN <<EOT
   rm -rf ${CATALINA_HOME}/webapps/*
   mkdir -p ${CATALINA_HOME}/webapps/ROOT
   curl -fsSL -o /tmp/xnat-web-${XNAT_VERSION}.war \
-    https://github.com/NrgXnat/xnat/releases/download/${XNAT_VERSION}/xnat-web-${XNAT_VERSION}.war
+    https://github.com/NrgXnat/xnat-web/releases/download/${XNAT_VERSION}/xnat-web-${XNAT_VERSION}.war
   unzip -o -d ${CATALINA_HOME}/webapps/ROOT /tmp/xnat-web-${XNAT_VERSION}.war
+  rm -f /tmp/xnat-web-${XNAT_VERSION}.war
 EOT
 
 # Download standard plugins
@@ -68,7 +71,7 @@ RUN <<EOT
   curl -fsSL -O \
     https://github.com/NrgXnat/ldap-auth-plugin/releases/download/${ldap_auth_ver}/ldap-auth-plugin-${ldap_auth_ver}.jar
   curl -fsSL -O \
-    https://github.com/xnatworks/ohif-viewer-xnat-plugin/releases/download/${ohif_viewer_ver}/ohif-viewer-${ohif_viewer_ver}-fat.jar
+    https://github.com/xnatworks/ohif-viewer-xnat-plugin/releases/download/${ohif_viewer_ver}/ohif-viewer-${ohif_viewer_ver}.jar
   curl -fsSL -O \
     https://github.com/NrgXnat/openid-auth-plugin/releases/download/${openid_auth_ver}/openid-auth-plugin-${openid_auth_ver}-xpl.jar
   curl -fsSL -O \
@@ -85,8 +88,10 @@ ARG XNAT_ROOT
 ARG XNAT_HOME
 
 RUN <<EOT
-  apt update
-  apt install -y \
+  set -eu
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    curl \
     less \
     telnet \
     vim \
@@ -111,7 +116,7 @@ EOT
 #
 # Set INSTALL_OPENCV=false for 1.9.x builds, which are on dcm4che 2 and would carry ~19 MB unused.
 # -----------------------------------------------------------------------------
-ARG INSTALL_OPENCV=true
+ARG INSTALL_OPENCV=false
 # No default: BuildKit populates TARGETARCH with the architecture actually being built for, and a
 # default here would mask it -- an arm64 build would silently install the amd64 native. Empty (a
 # pre-BuildKit builder) falls through to the error case, which is the right answer.
@@ -139,6 +144,7 @@ COPY --from=build ${CATALINA_HOME}/webapps/ ${CATALINA_HOME}/webapps/
 COPY --from=build ${XNAT_ROOT} ${XNAT_ROOT}
 
 RUN <<EOT
+  set -eu
   sed -i \
     's/ch.qos.logback.core.rolling.RollingFileAppender/ch.qos.logback.core.ConsoleAppender/' \
     ${CATALINA_HOME}/webapps/ROOT/WEB-INF/classes/logback.xml
@@ -153,7 +159,7 @@ ENV XNAT_HOME=${XNAT_HOME} \
     TZ=UTC \
     CATALINA_OPTS="-XX:InitialRAMPercentage=40.0 -XX:MaxRAMPercentage=50.0 -XX:+UseG1GC -XX:-OmitStackTraceInFastThrow -Dxnat.home=${XNAT_HOME}"
 
-LABEL org.opencontainers.image.source https://github.com/australian-imaging-service/xnat-docker-build
+LABEL org.opencontainers.image.source="https://github.com/australian-imaging-service/xnat-docker-build"
 LABEL maintainer="AIS Team"
 
 ENTRYPOINT ["entrypoint.sh"]
